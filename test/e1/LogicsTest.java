@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +30,16 @@ class LogicsTest {
                 getPositionOfFigure((i, j) -> logics.hasPawn(i, j)));
     }
 
+    @Test
+    void testCanHit(){
+        Pair<Integer, Integer> knightPosition = getPositionOfFigure((i, j) -> logics.hasKnight(i, j));
+        Pair<Integer, Integer> pawnPosition = getPositionOfFigure((i, j) -> logics.hasPawn(i, j));
+        int xDifferenceOfComponents = knightPosition.getX() - pawnPosition.getY();
+        int yDifferenceOfComponents = knightPosition.getY() - pawnPosition.getY();
+        assertEquals(logics.hit(pawnPosition.getX(), pawnPosition.getY()),
+                xDifferenceOfComponents!=0 && yDifferenceOfComponents!=0 &&
+                        Math.abs(xDifferenceOfComponents)+Math.abs(yDifferenceOfComponents)==3);
+    }
     private Pair<Integer, Integer> getPositionOfFigure(BiPredicate<Integer, Integer> figureFunction){
         List<Pair<Integer, Integer>> positionsFounded = new ArrayList<>();
         for(int i = 0; i < CHESSBOARD_SIZE; i++){
@@ -47,4 +55,5 @@ class LogicsTest {
             return new Pair<>(POSITION_NOT_FOUND_VALUE, POSITION_NOT_FOUND_VALUE);
         }
     }
+
 }
